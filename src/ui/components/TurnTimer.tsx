@@ -2,16 +2,10 @@ import React from "react"
 import Button from "./Button"
 import "./TurnTimer.css"
 import { PlayerTimeManager } from "../../systems/PlayerTimeManager"
+import type { PlayerTime } from "../../systems/PlayerTimeManager"
 
-export interface TurnTimerProps {
-    name: string
-    timeLeft: number
-    backgroundColor: string
-    borderColor: string
-    selected: boolean
-}
-
-const TurnTimer: React.FC<TurnTimerProps> = ({
+const TurnTimer: React.FC<PlayerTime> = ({
+    id,
     name,
     timeLeft,
     backgroundColor,
@@ -38,7 +32,11 @@ const TurnTimer: React.FC<TurnTimerProps> = ({
             <p>Time Left: {formatTime(timeLeft)}</p>
             {selected && (
                 <Button
-                    onClick={() => PlayerTimeManager.getInstance().endTurn()}
+                    onClick={() =>
+                        console.log(
+                            PlayerTimeManager.getInstance().getPlayerById(id)
+                        )
+                    }
                     value="End Turn"
                 />
             )}
