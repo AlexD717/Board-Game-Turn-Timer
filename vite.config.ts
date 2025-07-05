@@ -6,10 +6,10 @@ const base = "/Board-Game-Turn-Timer/"
 
 // https://vite.dev/config/
 export default defineConfig({
-  plugins: [react()],
-  server: {
-    port: port,
-    open: true, // Automatically open the browser
-  },
-  base: base,
+    plugins: [react()],
+    server: {
+        port: port,
+        open: true, // Automatically open the browser
+    },
+    base: base,
 })
