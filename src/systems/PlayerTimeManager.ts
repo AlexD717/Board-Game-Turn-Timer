@@ -73,6 +73,17 @@ export class PlayerTimeManager {
         }
     }
 
+    nextPlayer(playerId: number) {
+        for (let i = 0; i < this.players.length; i++) {
+            const player = this.players[i]
+            if (player.id === playerId) {
+                const nextIndex = (i + 1) % this.players.length
+                this.setSelectedPlayer(this.players[nextIndex].id)
+                return
+            }
+        }
+    }
+
     getPlayers() {
         return this.players
     }

@@ -1,5 +1,4 @@
 import React from "react"
-import Button from "./Button"
 import "./TurnTimer.css"
 import { PlayerTimeManager } from "../../systems/PlayerTimeManager"
 import type { PlayerTime } from "../../systems/PlayerTimeManager"
@@ -25,6 +24,15 @@ const TurnTimer: React.FC<PlayerTime> = ({
         return `${minutes}:${displaySecs}`
     }
 
+    function NextPlayer() {
+        const manager = PlayerTimeManager.getInstance()
+        if (!manager.getPlayerById(id)?.selected) {
+            console.log(`Player with id ${id} is not selected`)
+            return
+        }
+        manager.nextPlayer(id)
+    }
+
     const style: React.CSSProperties = {
         backgroundColor,
         borderColor,
@@ -34,20 +42,19 @@ const TurnTimer: React.FC<PlayerTime> = ({
     }
 
     return (
-        <div className="turn-timer" style={style}>
+        <button
+            className="turn-timer"
+            style={style}
+            onClick={() => {
+                NextPlayer()
+            }}
+            disabled={
+                !PlayerTimeManager.getInstance().getPlayerById(id)?.selected
+            }
+        >
             <h2>{name}'s Turn</h2>
             <p>Time Left: {formatTime(timeLeft)}</p>
-            {selected && (
-                <Button
-                    onClick={() =>
-                        console.log(
-                            PlayerTimeManager.getInstance().getPlayerById(id)
-                        )
-                    }
-                    value="End Turn"
-                />
-            )}
-        </div>
+        </button>
     )
 }
 

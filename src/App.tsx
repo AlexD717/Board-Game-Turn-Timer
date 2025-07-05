@@ -35,5 +35,15 @@ function usePlayerTimes(): PlayerTime[] {
         return () => manager.unsubscribe(update)
     }, [manager])
 
-    return players
+    const selectedIndex = players.findIndex((p) => p.selected)
+
+    const rotatedPlayers =
+        selectedIndex === -1
+            ? players
+            : [
+                  ...players.slice(selectedIndex),
+                  ...players.slice(0, selectedIndex),
+              ]
+
+    return rotatedPlayers
 }
