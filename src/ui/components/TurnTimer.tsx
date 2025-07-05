@@ -14,8 +14,15 @@ const TurnTimer: React.FC<PlayerTime> = ({
 }) => {
     const formatTime = (seconds: number): string => {
         const minutes = Math.floor(seconds / 60)
-        const secs = seconds % 60
-        return `${minutes}:${secs < 10 ? "0" : ""}${secs}`
+        let secs = seconds % 60
+        let displaySecs
+        if (minutes <= 0) {
+            displaySecs = secs.toFixed(2)
+            return displaySecs
+        }
+        displaySecs =
+            Math.round(secs) < 10 ? `0${secs.toFixed(0)}` : secs.toFixed(0)
+        return `${minutes}:${displaySecs}`
     }
 
     const style: React.CSSProperties = {

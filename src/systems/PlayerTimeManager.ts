@@ -9,6 +9,7 @@ export interface PlayerTime {
 
 export class PlayerTimeManager {
     private players: PlayerTime[] = []
+    private selectedPlayer: PlayerTime | null = null
 
     private static instance: PlayerTimeManager
 
@@ -17,10 +18,10 @@ export class PlayerTimeManager {
             {
                 id: 0,
                 name: "Player 1",
-                timeLeft: 30,
+                timeLeft: 75,
                 backgroundColor: "#000055",
                 borderColor: "#0000ff",
-                selected: true,
+                selected: false,
             },
             {
                 id: 1,
@@ -39,6 +40,7 @@ export class PlayerTimeManager {
                 selected: false,
             },
         ]
+        this.setSelectedPlayer(0) // Set the first player as selected by default
     }
 
     static getInstance(): PlayerTimeManager {
@@ -57,10 +59,17 @@ export class PlayerTimeManager {
         this.players = this.players.filter((p) => p.id !== playerId)
     }
 
-    updateTime(playerId: number, timeLeft: number) {
-        const player = this.players.find((p) => p.id === playerId)
-        if (player) {
-            player.timeLeft = timeLeft
+    setSelectedPlayer(playerId: number) {
+        this.players.forEach((p) => {
+            p.selected = p.id === playerId
+        })
+        this.selectedPlayer = this.getPlayerById(playerId) || null
+    }
+
+    update(deltaTime: number) {
+        if (this.selectedPlayer) {
+            this.selectedPlayer.timeLeft -= deltaTime
+            this.notify()
         }
     }
 
@@ -70,5 +79,19 @@ export class PlayerTimeManager {
 
     getPlayerById(playerId: number): PlayerTime | undefined {
         return this.players.find((p) => p.id === playerId)
+    }
+
+    private subscribers: (() => void)[] = []
+
+    subscribe(callback: () => void) {
+        this.subscribers.push(callback)
+    }
+
+    unsubscribe(callback: () => void) {
+        this.subscribers = this.subscribers.filter((cb) => cb !== callback)
+    }
+
+    private notify() {
+        this.subscribers.forEach((cb) => cb())
     }
 }
