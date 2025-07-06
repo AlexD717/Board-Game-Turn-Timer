@@ -13,11 +13,6 @@ function TimerPage() {
     return (
         <>
             <h1>Turn Timer</h1>
-            <div className="player-list" style={{}}>
-                {usePlayerTimes().map((player) => (
-                    <TurnTimer key={player.id} {...player} />
-                ))}
-            </div>
             <div className="controls">
                 {started ? (
                     <Button
@@ -25,7 +20,7 @@ function TimerPage() {
                             PlayerTimeManager.getInstance().setStarted(false)
                         }
                         value="Stop Timer"
-                        style={{ marginTop: "50px", marginRight: "25px" }}
+                        style={{ marginTop: "10px", marginRight: "25px" }}
                     />
                 ) : (
                     <Button
@@ -33,36 +28,23 @@ function TimerPage() {
                             PlayerTimeManager.getInstance().setStarted(true)
                         }
                         value="Start Timer"
-                        style={{ marginTop: "50px", marginRight: "25px" }}
+                        style={{ marginTop: "10px", marginRight: "25px" }}
                     />
                 )}
 
                 <Button
-                    onClick={() => navigate("/playerCustomizationPage")}
+                    onClick={() => {
+                        PlayerTimeManager.getInstance().setStarted(false)
+                        navigate("/playerCustomizationPage")
+                    }}
                     value="Customize Players"
-                    style={{}}
+                    style={{ marginBottom: "50px" }}
                 />
             </div>
-            <div
-                className="main-info"
-                style={{
-                    position: "absolute",
-                    bottom: 0,
-                    right: 10,
-                    padding: "10px 20px",
-                }}
-            >
-                <Button
-                    onClick={() => {
-                        window.open(
-                            "https://github.com/AlexD717/Board-Game-Turn-Timer",
-                            "_blank"
-                        )
-                    }}
-                    value="View in GitHub"
-                    style={{}}
-                />
-                <p>Developed by: Alexey Dmitriev</p>
+            <div className="player-list" style={{}}>
+                {usePlayerTimes().map((player) => (
+                    <TurnTimer key={player.id} {...player} />
+                ))}
             </div>
         </>
     )
