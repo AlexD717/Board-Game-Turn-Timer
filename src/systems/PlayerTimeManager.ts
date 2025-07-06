@@ -1,7 +1,7 @@
 export interface PlayerTime {
     id: number
     name: string
-    timeLeft: number
+    timeSpent: number
     backgroundColor: string
     borderColor: string
     selected: boolean
@@ -11,6 +11,8 @@ export class PlayerTimeManager {
     private players: PlayerTime[] = []
     private selectedPlayer: PlayerTime | null = null
 
+    private started: boolean = false
+
     private static instance: PlayerTimeManager
 
     private constructor() {
@@ -18,7 +20,7 @@ export class PlayerTimeManager {
             {
                 id: 0,
                 name: "Player 1",
-                timeLeft: 75,
+                timeSpent: 0,
                 backgroundColor: "#000055",
                 borderColor: "#0000ff",
                 selected: false,
@@ -26,7 +28,7 @@ export class PlayerTimeManager {
             {
                 id: 1,
                 name: "Player 2",
-                timeLeft: 30,
+                timeSpent: 0,
                 backgroundColor: "#005500",
                 borderColor: "#00ff00",
                 selected: false,
@@ -34,7 +36,7 @@ export class PlayerTimeManager {
             {
                 id: 2,
                 name: "Player 3",
-                timeLeft: 30,
+                timeSpent: 0,
                 backgroundColor: "#550000",
                 borderColor: "#ff0000",
                 selected: false,
@@ -67,13 +69,31 @@ export class PlayerTimeManager {
     }
 
     update(deltaTime: number) {
+        if (!this.started) {
+            return
+        }
+
         if (this.selectedPlayer) {
-            this.selectedPlayer.timeLeft -= deltaTime
+            this.selectedPlayer.timeSpent += deltaTime
             this.notify()
         }
     }
 
+    setStarted(started: boolean) {
+        this.started = started
+        this.notify()
+    }
+
+    getTimeGoing(): boolean {
+        return this.started
+    }
+
     nextPlayer(playerId: number) {
+        if (!this.started) {
+            console.log("Game has not started yet")
+            return
+        }
+
         for (let i = 0; i < this.players.length; i++) {
             const player = this.players[i]
             if (player.id === playerId) {

@@ -1,49 +1,23 @@
 import "./App.css"
-import { PlayerTimeManager } from "./systems/PlayerTimeManager"
-import TurnTimer from "./ui/components/TurnTimer"
 import { useGameLoop } from "./systems/GameLoop"
-import type { PlayerTime } from "./systems/PlayerTimeManager"
-import { useEffect, useState } from "react"
+import { Routes, Route } from "react-router-dom"
+import TimerPage from "./pages/timerPage"
+import PlayerCustomizationPage from "./pages/playerCustomizationPage"
 
 function App() {
     useGameLoop()
 
     return (
-        <>
-            <h1>Turn Timer</h1>
-            {usePlayerTimes().map((player) => (
-                <TurnTimer key={player.id} {...player} />
-            ))}
-            <div className="card">
-                <p>Developed by: Alexey Dmitriev</p>
-            </div>
-        </>
+        <div>
+            <Routes>
+                <Route path="/" element={<TimerPage />} />
+                <Route path="/timerPage" element={<TimerPage />} />
+                <Route
+                    path="/playerCustomizationPage"
+                    element={<PlayerCustomizationPage />}
+                />
+            </Routes>
+        </div>
     )
 }
 export default App
-
-function usePlayerTimes(): PlayerTime[] {
-    const manager = PlayerTimeManager.getInstance()
-    const [players, setPlayers] = useState<PlayerTime[]>(manager.getPlayers())
-
-    useEffect(() => {
-        const update = () => {
-            setPlayers([...manager.getPlayers()]) // force shallow update
-        }
-
-        manager.subscribe(update)
-        return () => manager.unsubscribe(update)
-    }, [manager])
-
-    const selectedIndex = players.findIndex((p) => p.selected)
-
-    const rotatedPlayers =
-        selectedIndex === -1
-            ? players
-            : [
-                  ...players.slice(selectedIndex),
-                  ...players.slice(0, selectedIndex),
-              ]
-
-    return rotatedPlayers
-}

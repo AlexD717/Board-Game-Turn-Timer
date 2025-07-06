@@ -2,7 +2,7 @@ import { defineConfig } from "vite"
 import react from "@vitejs/plugin-react"
 
 const port = 3000
-const base = "/Board-Game-Turn-Timer/"
+const base = "/"
 
 // https://vite.dev/config/
 export default defineConfig({
