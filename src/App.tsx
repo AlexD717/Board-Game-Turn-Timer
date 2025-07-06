@@ -8,6 +8,7 @@ import Button from "./ui/components/Button"
 
 function App() {
     useGameLoop()
+    const started = useGameStarted()
 
     return (
         <>
@@ -18,13 +19,24 @@ function App() {
                 ))}
             </div>
             <div className="controls">
-                <Button
-                    onClick={() =>
-                        PlayerTimeManager.getInstance().setStarted(true)
-                    }
-                    value="Start Timer"
-                    style={{ marginTop: "50px", marginRight: "25px" }}
-                />
+                {started ? (
+                    <Button
+                        onClick={() =>
+                            PlayerTimeManager.getInstance().setStarted(false)
+                        }
+                        value="Stop Timer"
+                        style={{ marginTop: "50px", marginRight: "25px" }}
+                    />
+                ) : (
+                    <Button
+                        onClick={() =>
+                            PlayerTimeManager.getInstance().setStarted(true)
+                        }
+                        value="Start Timer"
+                        style={{ marginTop: "50px", marginRight: "25px" }}
+                    />
+                )}
+
                 <Button
                     onClick={() =>
                         PlayerTimeManager.getInstance().nextPlayer(0)
@@ -58,6 +70,19 @@ function App() {
     )
 }
 export default App
+
+function useGameStarted(): boolean {
+    const manager = PlayerTimeManager.getInstance()
+    const [started, setStarted] = useState<boolean>(manager.getTimeGoing())
+
+    useEffect(() => {
+        const update = () => setStarted(manager.getTimeGoing())
+        manager.subscribe(update)
+        return () => manager.unsubscribe(update)
+    }, [manager])
+
+    return started
+}
 
 function usePlayerTimes(): PlayerTime[] {
     const manager = PlayerTimeManager.getInstance()

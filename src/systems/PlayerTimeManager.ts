@@ -81,6 +81,11 @@ export class PlayerTimeManager {
 
     setStarted(started: boolean) {
         this.started = started
+        this.notify()
+    }
+
+    getTimeGoing(): boolean {
+        return this.started
     }
 
     nextPlayer(playerId: number) {

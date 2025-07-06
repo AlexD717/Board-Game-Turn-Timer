@@ -49,7 +49,8 @@ const TurnTimer: React.FC<PlayerTime> = ({
                 NextPlayer()
             }}
             disabled={
-                !PlayerTimeManager.getInstance().getPlayerById(id)?.selected
+                !PlayerTimeManager.getInstance().getPlayerById(id)?.selected ||
+                !PlayerTimeManager.getInstance().getTimeGoing()
             }
         >
             <h2>{name}'s Turn</h2>
