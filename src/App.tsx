@@ -4,6 +4,7 @@ import TurnTimer from "./ui/components/TurnTimer"
 import { useGameLoop } from "./systems/GameLoop"
 import type { PlayerTime } from "./systems/PlayerTimeManager"
 import { useEffect, useState } from "react"
+import Button from "./ui/components/Button"
 
 function App() {
     useGameLoop()
@@ -14,9 +15,28 @@ function App() {
             {usePlayerTimes().map((player) => (
                 <TurnTimer key={player.id} {...player} />
             ))}
-            <div className="card">
+            <div
+                className="infoButtons"
+                style={{
+                    position: "absolute",
+                    bottom: 0,
+                    right: 10,
+                    padding: "10px 20px",
+                }}
+            >
+                <Button
+                    onClick={() => {
+                        window.open(
+                            "https://github.com/AlexD717/Board-Game-Turn-Timer",
+                            "_blank"
+                        )
+                    }}
+                    value="View in GitHub"
+                    style={{}}
+                />
                 <p>Developed by: Alexey Dmitriev</p>
             </div>
+            <div className="card"></div>
         </>
     )
 }
