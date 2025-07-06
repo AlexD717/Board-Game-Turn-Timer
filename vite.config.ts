@@ -2,14 +2,13 @@ import { defineConfig } from "vite"
 import react from "@vitejs/plugin-react"
 
 const port = 3000
-const base = "/"
 
 // https://vite.dev/config/
-export default defineConfig({
+export default defineConfig(({ mode }) => ({
     plugins: [react()],
     server: {
         port: port,
         open: true, // Automatically open the browser
     },
-    base: base,
-})
+    base: mode === "production" ? "/Board-Game-Turn-Timer/" : "/",
+}))
