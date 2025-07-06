@@ -11,6 +11,7 @@ function App() {
         <div>
             <Routes>
                 <Route path="/" element={<TimerPage />} />
+                <Route path="/Board-Game-Turn-Timer" element={<TimerPage />} />
                 <Route path="/timerPage" element={<TimerPage />} />
                 <Route
                     path="/playerCustomizationPage"
