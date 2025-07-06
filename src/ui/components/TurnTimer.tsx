@@ -6,7 +6,7 @@ import type { PlayerTime } from "../../systems/PlayerTimeManager"
 const TurnTimer: React.FC<PlayerTime> = ({
     id,
     name,
-    timeLeft,
+    timeSpent,
     backgroundColor,
     borderColor,
     selected,
@@ -53,7 +53,7 @@ const TurnTimer: React.FC<PlayerTime> = ({
             }
         >
             <h2>{name}'s Turn</h2>
-            <p>Time Left: {formatTime(timeLeft)}</p>
+            <p>Time Spent: {formatTime(timeSpent)}</p>
         </button>
     )
 }

@@ -12,11 +12,29 @@ function App() {
     return (
         <>
             <h1>Turn Timer</h1>
-            {usePlayerTimes().map((player) => (
-                <TurnTimer key={player.id} {...player} />
-            ))}
+            <div className="player-list" style={{}}>
+                {usePlayerTimes().map((player) => (
+                    <TurnTimer key={player.id} {...player} />
+                ))}
+            </div>
+            <div className="controls">
+                <Button
+                    onClick={() =>
+                        PlayerTimeManager.getInstance().setStarted(true)
+                    }
+                    value="Start Timer"
+                    style={{ marginTop: "50px", marginRight: "25px" }}
+                />
+                <Button
+                    onClick={() =>
+                        PlayerTimeManager.getInstance().nextPlayer(0)
+                    }
+                    value="Customize Players"
+                    style={{}}
+                />
+            </div>
             <div
-                className="infoButtons"
+                className="main-info"
                 style={{
                     position: "absolute",
                     bottom: 0,
@@ -36,7 +54,6 @@ function App() {
                 />
                 <p>Developed by: Alexey Dmitriev</p>
             </div>
-            <div className="card"></div>
         </>
     )
 }
