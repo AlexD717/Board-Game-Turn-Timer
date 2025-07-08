@@ -1,3 +1,5 @@
+import tinycolor from "tinycolor2"
+
 export interface PlayerTime {
     id: number
     name: string
@@ -21,24 +23,24 @@ export class PlayerTimeManager {
                 id: 0,
                 name: "Player 1",
                 timeSpent: 0,
-                backgroundColor: "#000055",
-                borderColor: "#0000ff",
+                backgroundColor: "#000088",
+                borderColor: tinycolor("#000055").brighten(40).toHexString(),
                 selected: false,
             },
             {
                 id: 1,
                 name: "Player 2",
                 timeSpent: 0,
-                backgroundColor: "#005500",
-                borderColor: "#00ff00",
+                backgroundColor: "#008800",
+                borderColor: tinycolor("#005500").brighten(40).toHexString(),
                 selected: false,
             },
             {
                 id: 2,
                 name: "Player 3",
                 timeSpent: 0,
-                backgroundColor: "#550000",
-                borderColor: "#ff0000",
+                backgroundColor: "#880000",
+                borderColor: tinycolor("#550000").brighten(40).toHexString(),
                 selected: false,
             },
         ]
@@ -59,6 +61,16 @@ export class PlayerTimeManager {
 
     removePlayer(playerId: number) {
         this.players = this.players.filter((p) => p.id !== playerId)
+    }
+
+    updatePlayer(playerId: number, updatedData: Partial<PlayerTime>) {
+        const player = this.getPlayerById(playerId)
+        if (!player) {
+            throw new Error(`Player with id ${playerId} does not exist`)
+        }
+
+        Object.assign(player, updatedData)
+        this.notify()
     }
 
     setSelectedPlayer(playerId: number) {

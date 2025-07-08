@@ -1,0 +1,38 @@
+label {
+    font-weight: 600;
+    font-size: 18px;
+    color: #ffffff;
+    margin-right: 12px;
+}
+
+input[type="text"] {
+    width: 40%;
+    padding: 10px 12px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 16px;
+    transition: border-color 0.2s;
+    background-color: transparent;
+}
+
+input[type="text"]:focus {
+    border: 3px solid #ccc;
+    outline: none;
+}
+
+input[type="color"] {
+    width: 40%;
+    height: 40px;
+    border: none;
+    cursor: pointer;
+    background: none;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    flex: 1;
+    margin-bottom: 8px;
+}

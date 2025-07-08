@@ -43,7 +43,7 @@ function App() {
                     }}
                     style={{}}
                 >
-                    View in GitHub
+                    View on GitHub
                 </button>
                 <p>Developed by: Alexey Dmitriev</p>
             </div>
