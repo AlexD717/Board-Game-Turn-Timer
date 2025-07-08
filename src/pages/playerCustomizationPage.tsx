@@ -1,12 +1,9 @@
 import { useNavigate } from "react-router-dom"
 import Button from "../ui/components/Button"
-import { useMemo, useState } from "react"
+import { useEffect, useState } from "react"
 import { PlayerTimeManager } from "../systems/PlayerTimeManager"
+import tinyColor from "tinycolor2"
 import "./playerCustomizationPage.css"
-
-function customizePlayer(playerId: number) {
-    console.log(`Customize player ${playerId}`)
-}
 
 interface PlayerCustomizationPageProps {
     id: number
@@ -26,40 +23,25 @@ const PlayerCustomizationCard: React.FC<PlayerCustomizationPageProps> = ({
 
     const handleNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setName(event.target.value)
+        PlayerTimeManager.getInstance().updatePlayer(id, {
+            name: event.target.value,
+        })
         console.log(`Name changed to: ${event.target.value}`)
     }
 
     const handleColorChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setColor(event.target.value)
+        PlayerTimeManager.getInstance().updatePlayer(id, {
+            backgroundColor: event.target.value,
+            borderColor: tinyColor(event.target.value)
+                .brighten(40)
+                .toHexString(),
+        })
         console.log(`Color changed to: ${event.target.value}`)
     }
 
     return (
-        <Button
-            value={
-                <div className="player-customization-card">
-                    <div className="form-group">
-                        <label htmlFor="player-name">Name:</label>
-                        <input
-                            id="player-name"
-                            type="text"
-                            value={name}
-                            onChange={handleNameChange}
-                            placeholder="Enter name"
-                        />
-                    </div>
-                    <div className="form-group">
-                        <label htmlFor="player-color">Color:</label>
-                        <input
-                            id="player-color"
-                            type="color"
-                            value={color}
-                            onChange={handleColorChange}
-                        />
-                    </div>
-                </div>
-            }
-            onClick={() => customizePlayer(id)}
+        <div
             style={{
                 border: "1px solid",
                 borderColor: borderColor,
@@ -69,29 +51,53 @@ const PlayerCustomizationCard: React.FC<PlayerCustomizationPageProps> = ({
                 marginBottom: "16px",
                 minWidth: "60vw",
             }}
-        />
+        >
+            <div className="player-customization-card">
+                <div className="form-group">
+                    <label htmlFor="player-name">Name:</label>
+                    <input
+                        id="player-name"
+                        type="text"
+                        value={name}
+                        onChange={handleNameChange}
+                        placeholder="Enter name"
+                    />
+                </div>
+                <div className="form-group">
+                    <label htmlFor="player-color">Color:</label>
+                    <input
+                        id="player-color"
+                        type="color"
+                        value={color}
+                        onChange={handleColorChange}
+                    />
+                </div>
+            </div>
+        </div>
     )
 }
 
 const PlayerCustomizationPage = () => {
     const navigate = useNavigate()
 
-    const playerConfigurationElements = useMemo(() => {
-        const players = PlayerTimeManager.getInstance().getPlayers()
+    const [players, setPlayers] = useState(
+        PlayerTimeManager.getInstance().getPlayers()
+    )
 
-        return players.map((player) => (
-            <div
-                style={{ marginBottom: "20px", marginTop: "20px" }}
-                key={player.id}
-            >
-                <PlayerCustomizationCard
-                    id={player.id}
-                    initialName={player.name}
-                    backgroundColor={player.backgroundColor}
-                    borderColor={player.borderColor}
-                />
-            </div>
-        ))
+    useEffect(() => {
+        const manager = PlayerTimeManager.getInstance()
+
+        const updatePlayers = () => {
+            setPlayers([...manager.getPlayers()])
+        }
+
+        // Subscribe to updates
+        manager.subscribe(updatePlayers)
+        updatePlayers() // initial load
+
+        return () => {
+            manager.unsubscribe(updatePlayers)
+        }
     }, [])
 
     return (
@@ -101,9 +107,17 @@ const PlayerCustomizationPage = () => {
             <Button
                 onClick={() => navigate("/timerPage")}
                 value="Back to Timer"
-                style={{}}
+                style={{ marginBottom: "16px" }}
             />
-            {playerConfigurationElements}
+            {players.map((player) => (
+                <PlayerCustomizationCard
+                    key={player.id}
+                    id={player.id}
+                    initialName={player.name}
+                    backgroundColor={player.backgroundColor}
+                    borderColor={player.borderColor}
+                />
+            ))}
         </div>
     )
 }
