@@ -26,7 +26,6 @@ const PlayerCustomizationCard: React.FC<PlayerCustomizationPageProps> = ({
         PlayerTimeManager.getInstance().updatePlayer(id, {
             name: event.target.value,
         })
-        console.log(`Name changed to: ${event.target.value}`)
     }
 
     const handleColorChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -37,7 +36,6 @@ const PlayerCustomizationCard: React.FC<PlayerCustomizationPageProps> = ({
                 .brighten(40)
                 .toHexString(),
         })
-        console.log(`Color changed to: ${event.target.value}`)
     }
 
     return (
@@ -120,6 +118,14 @@ const PlayerCustomizationPage = () => {
                     borderColor={player.borderColor}
                 />
             ))}
+            <button
+                onClick={() => {
+                    PlayerTimeManager.getInstance().addPlayer()
+                }}
+                className="add-player-button"
+            >
+                Add Player
+            </button>
         </div>
     )
 }

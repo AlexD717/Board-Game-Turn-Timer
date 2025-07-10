@@ -39,10 +39,22 @@ input[type="color"] {
     box-sizing: border-box;
     margin-left: 8px;
     height: 132px;
+    min-width: 7vw;
 }
 .remove-player-button:hover {
     border-color: #ff0000;
-    border: 5px solid #ff0000;
+}
+
+.add-player-button {
+    background-color: #079707;
+    border: 3px solid #005500;
+    color: white;
+    font-size: 16px;
+    box-sizing: border-box;
+    min-width: stretch;
+}
+.add-player-button:hover {
+    border-color: #00ff00;
 }
 
 .form-group {
@@ -67,7 +79,7 @@ input[type="color"] {
 .player-customization-card-container {
     display: flex;
     justify-content: center;
-    margin-bottom: 16px;
+    margin-bottom: 8px;
     align-items: stretch;
     box-sizing: border-box;
 }
