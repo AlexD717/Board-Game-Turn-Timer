@@ -41,18 +41,14 @@ const PlayerCustomizationCard: React.FC<PlayerCustomizationPageProps> = ({
     }
 
     return (
-        <div
-            style={{
-                border: "1px solid",
-                borderColor: borderColor,
-                backgroundColor: backgroundColor,
-                borderRadius: "8px",
-                padding: "16px",
-                marginBottom: "16px",
-                minWidth: "60vw",
-            }}
-        >
-            <div className="player-customization-card">
+        <div className="player-customization-card-container">
+            <div
+                className="player-customization-card"
+                style={{
+                    borderColor: borderColor,
+                    backgroundColor: backgroundColor,
+                }}
+            >
                 <div className="form-group">
                     <label htmlFor="player-name">Name:</label>
                     <input
@@ -73,6 +69,12 @@ const PlayerCustomizationCard: React.FC<PlayerCustomizationPageProps> = ({
                     />
                 </div>
             </div>
+            <button
+                onClick={() => PlayerTimeManager.getInstance().removePlayer(id)}
+                className="remove-player-button"
+            >
+                Remove Player
+            </button>
         </div>
     )
 }

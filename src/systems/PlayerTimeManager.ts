@@ -61,6 +61,7 @@ export class PlayerTimeManager {
 
     removePlayer(playerId: number) {
         this.players = this.players.filter((p) => p.id !== playerId)
+        this.notify()
     }
 
     updatePlayer(playerId: number, updatedData: Partial<PlayerTime>) {
