@@ -1,5 +1,5 @@
 export function getNextAvailableNumber(existingNumbers: number[]): number {
-    let nextNumber = 1
+    let nextNumber = 0
     while (existingNumbers.includes(nextNumber)) {
         nextNumber++
     }

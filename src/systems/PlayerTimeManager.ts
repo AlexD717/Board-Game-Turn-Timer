@@ -59,6 +59,7 @@ export class PlayerTimeManager {
             this.players.map((p) => p.id)
         )
         const newPlayerColor = getNextAvailableColor()
+        const isSelected = this.players.length === 0 ? true : false
 
         const newPlayer = {
             id: newPlayerId,
@@ -66,13 +67,18 @@ export class PlayerTimeManager {
             timeSpent: 0,
             backgroundColor: newPlayerColor,
             borderColor: tinycolor(newPlayerColor).brighten(40).toHexString(),
-            selected: false,
+            selected: isSelected,
         }
         this.players.push(newPlayer)
+        if (isSelected) this.selectedPlayer = newPlayer
         this.notify()
     }
 
     removePlayer(playerId: number) {
+        if (this.selectedPlayer?.id === playerId) {
+            this.nextPlayer(playerId, true)
+        }
+
         this.players = this.players.filter((p) => p.id !== playerId)
         this.notify()
     }
@@ -114,8 +120,8 @@ export class PlayerTimeManager {
         return this.started
     }
 
-    nextPlayer(playerId: number) {
-        if (!this.started) {
+    nextPlayer(playerId: number, override: boolean = false) {
+        if (!this.started && !override) {
             console.log("Game has not started yet")
             return
         }
