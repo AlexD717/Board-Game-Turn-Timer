@@ -8,8 +8,8 @@ function App() {
     useGameLoop()
 
     return (
-        <>
-            <div>
+        <div className="app-container">
+            <div className="main-content">
                 <Routes>
                     <Route path="/" element={<TimerPage />} />
                     <Route
@@ -23,15 +23,13 @@ function App() {
                     />
                 </Routes>
             </div>
-            <div
+            <footer
                 className="main-info"
                 style={{
-                    position: "fixed",
-                    bottom: 20,
-                    right: 20,
-                    padding: "10px 20px",
-                    marginTop: "50px",
-                    marginLeft: "50px",
+                    textAlign: "right",
+                    padding: "1rem",
+                    bottom: "20px",
+                    right: "15vw",
                 }}
             >
                 <button
@@ -41,13 +39,13 @@ function App() {
                             "_blank"
                         )
                     }}
-                    style={{}}
+                    style={{ maxWidth: "15vw" }}
                 >
                     View on GitHub
                 </button>
                 <p>Developed by: Alexey Dmitriev</p>
-            </div>
-        </>
+            </footer>
+        </div>
     )
 }
 export default App

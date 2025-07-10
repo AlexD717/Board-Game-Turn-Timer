@@ -26,7 +26,6 @@ const PlayerCustomizationCard: React.FC<PlayerCustomizationPageProps> = ({
         PlayerTimeManager.getInstance().updatePlayer(id, {
             name: event.target.value,
         })
-        console.log(`Name changed to: ${event.target.value}`)
     }
 
     const handleColorChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -37,22 +36,17 @@ const PlayerCustomizationCard: React.FC<PlayerCustomizationPageProps> = ({
                 .brighten(40)
                 .toHexString(),
         })
-        console.log(`Color changed to: ${event.target.value}`)
     }
 
     return (
-        <div
-            style={{
-                border: "1px solid",
-                borderColor: borderColor,
-                backgroundColor: backgroundColor,
-                borderRadius: "8px",
-                padding: "16px",
-                marginBottom: "16px",
-                minWidth: "60vw",
-            }}
-        >
-            <div className="player-customization-card">
+        <div className="player-customization-card-container">
+            <div
+                className="player-customization-card"
+                style={{
+                    borderColor: borderColor,
+                    backgroundColor: backgroundColor,
+                }}
+            >
                 <div className="form-group">
                     <label htmlFor="player-name">Name:</label>
                     <input
@@ -73,6 +67,12 @@ const PlayerCustomizationCard: React.FC<PlayerCustomizationPageProps> = ({
                     />
                 </div>
             </div>
+            <button
+                onClick={() => PlayerTimeManager.getInstance().removePlayer(id)}
+                className="remove-player-button"
+            >
+                Remove Player
+            </button>
         </div>
     )
 }
@@ -118,6 +118,14 @@ const PlayerCustomizationPage = () => {
                     borderColor={player.borderColor}
                 />
             ))}
+            <button
+                onClick={() => {
+                    PlayerTimeManager.getInstance().addPlayer()
+                }}
+                className="add-player-button"
+            >
+                Add Player
+            </button>
         </div>
     )
 }

@@ -1,4 +1,6 @@
 import tinycolor from "tinycolor2"
+import { getNextAvailableNumber } from "../utilities/mathUtils"
+import { getNextAvailableColor } from "../utilities/colorUtils"
 
 export interface PlayerTime {
     id: number
@@ -52,15 +54,27 @@ export class PlayerTimeManager {
         return PlayerTimeManager.instance
     }
 
-    addPlayer(player: PlayerTime) {
-        if (this.players.some((p) => p.id === player.id)) {
-            throw new Error(`Player with id ${player.id} already exists`)
+    addPlayer() {
+        const newPlayerId = getNextAvailableNumber(
+            this.players.map((p) => p.id)
+        )
+        const newPlayerColor = getNextAvailableColor()
+
+        const newPlayer = {
+            id: newPlayerId,
+            name: `Player ${newPlayerId + 1}`,
+            timeSpent: 0,
+            backgroundColor: newPlayerColor,
+            borderColor: tinycolor(newPlayerColor).brighten(40).toHexString(),
+            selected: false,
         }
-        this.players.push(player)
+        this.players.push(newPlayer)
+        this.notify()
     }
 
     removePlayer(playerId: number) {
         this.players = this.players.filter((p) => p.id !== playerId)
+        this.notify()
     }
 
     updatePlayer(playerId: number, updatedData: Partial<PlayerTime>) {
